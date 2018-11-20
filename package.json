@@ -1,0 +1,16 @@
+{
+  "name": "lordgenome-discord",
+  "version": "3.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Spaceboy Ross",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "kaori": "^1.2.0",
+    "yargs-parser": "^11.1.1"
+  }
+}
