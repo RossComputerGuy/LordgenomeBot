@@ -88,6 +88,7 @@ client.on("message",msg => {
 						}
 					}
 					if(!voiceChannel) return msg.channel.send(txt,{ tts: true });
+					txt = txt.replace("<#"+voiceChannel.id+">","");
 					GoogleTTS(txt,argv["lang"] || "en",parseInt(argv["speed"] || "1")).then(url => {
 						voiceChannel.join().then(connection => {
 							connection.playArbitraryInput(url).on("end",() => {
