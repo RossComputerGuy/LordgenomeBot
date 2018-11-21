@@ -6,7 +6,7 @@ module.exports = (client,msg,argv) => {
 			"**Rappu ha Kan no Tamashii da** Onore wo Shinjite Ten wo Yubisasu Dotou no Otoko Kamina-sama no Teema wo Mimi no Ana Kappojitte Yo~ku Kikiyagare!",
 			"**Rap is a man's soul!** Perk up your earholes and listen real close to the theme of Lord Kamina, the man of raging billows who believes in himself and points to heaven."
 		];
-		msg.reply(quotes[Math.floor(Math.random()*quotes.length)]);
+		msg.reply("\""+quotes[Math.floor(Math.random()*quotes.length)]+"\"");
 	} else {
 		var characters = {
 			"Kamina": [
@@ -61,6 +61,6 @@ module.exports = (client,msg,argv) => {
 		var char = argv["_"][0] || Object.keys(characters)[Math.floor(Math.random()*Object.keys(characters).length)];
 		var quotes = characters[char];
 		if(typeof(quotes) != "object") return msg.reply("Invalid character: "+argv["_"][0]);
-		msg.reply(quotes[Math.floor(Math.random()*quotes.length)]+" - "+char);
+		msg.reply("\""+quotes[Math.floor(Math.random()*quotes.length)]+"\" - "+char);
 	}
 };
