@@ -77,7 +77,7 @@ client.on("message",msg => {
 					break;
 				case "tts":
 					argv["_"].shift();
-					var txt = argv["_"].join(" ");
+					var txt = argv["_"].join(" ").substring(0,200);
 					var voiceChannel = msg.member.voiceChannel;
 					if(!voiceChannel) {
 						for(var channel of msg.mentions.channels.array()) {
