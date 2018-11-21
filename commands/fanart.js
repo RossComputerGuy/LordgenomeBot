@@ -8,9 +8,28 @@ const RATING = {
 };
 
 module.exports = (client,msg,argv) => {
+	if(argv["help"] || argv["h"]) {
+		var embed = new Discord.RichEmbed();
+		embed.setTitle("Lordgenome: fanart");
+		embed.setColor(0x6cae7f);
+		embed.setDescription([
+			"Usage: %fanart [options] <tags...>",
+			"\n",
+			"Options:",
+			"\t\* random - Enables random searching",
+			"\t\* site=<site> - Sets the site to search",
+			"\t\* limit=<number> - Sets the limit to use",
+			"\t\* rating=<value> - Sets the rating (Values: e(xplicite), s(afe), q(uestionable))",
+		].join("\n"));
+		return msg.channel.send(embed);
+	}
 	var kaori = new Kaori();
 	msg.channel.startTyping();
 	var site = argv["site"] || Object.keys(kaori.sites)[Math.floor(Math.random()*Object.keys(kaori.sites).length)];
+	if(Object.keys(kaori.sites).indexOf(site) == -1) {
+		msg.channel.stopTyping(true);
+		return msg.reply("Invalid site: "+site);
+	}
 	kaori.search(site,{
 		tags: argv["_"].length > 0 ? argv["_"] : ["gurren-lagann"],
 		limit: parseInt(argv["limit"] || "10000"),
@@ -41,6 +60,8 @@ module.exports = (client,msg,argv) => {
 		if(timestamp.getFullYear() == 1970) timestamp = new Date((result.created_at || result.updated_at)*1000);
 		embed.setTimestamp(timestamp);
 		if(typeof(result.author) == "string") embed.setAuthor(result.author);
+		else if(typeof(result.tag_string_artist) == "string") embed.setAuthor(result.tag_string_artist);
+		else if(typeof(result.uploader_name) == "string") embed.setAuthor(result.uploader_name);
 		if(result.common.fileURL.indexOf("://",result.common.fileURL.indexOf("://")) != -1) result.common.fileURL = result.file_url;
 		if(typeof(result.preview_url) == "string") embed.setThumbnail(result.preview_url.split(" ").join("%20"));
 		embed.setImage(result.common.fileURL.split(" ").join("%20"));

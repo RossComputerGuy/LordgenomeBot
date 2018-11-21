@@ -16,6 +16,7 @@ client.on("message",msg => {
 		var embed = new Discord.RichEmbed();
 		embed.setTitle("POLL: Should chatbot like features be added?");
 		embed.setURL("https://www.strawpoll.me/16889251");
+		embed.setColor(0x6cae7f);
 		msg.channel.send(embed);
 		var argv = argsparser(msg.content.substring(1,msg.content.length));
 		var cmd = argv["_"].shift();
