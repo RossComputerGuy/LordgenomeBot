@@ -13,6 +13,10 @@ client.on("guildMemberAdd",member => {
 
 client.on("message",msg => {
 	if(msg.content.substring(0,1) == "%" && !msg.author.bot) {
+		var embed = new Discord.RichEmbed();
+		embed.setTitle("POLL: Should chatbot like features be added?");
+		embed.setURL("https://www.strawpoll.me/16889251");
+		msg.channel.send(embed);
 		var argv = argsparser(msg.content.substring(1,msg.content.length));
 		var cmd = argv["_"].shift();
 		try {
