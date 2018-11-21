@@ -9,7 +9,7 @@ module.exports = (client,msg,argv) => {
 	embed.setColor(0x6cae7f);
 	embed.setDescription([
 		"**Commands**",
-		"\t\* fanart [sauce] - Searches for fanart. By default, it searched for Gurren Lagann fanart.",
+		"\t\* fanart [sauce] - Searches for fanart. By default, it searched for Gurren Lagann fanart. If you change `rating` to something that is not `s` (safe) and your not in a NSFW channel, the bot will stop.",
 		"\t\* hacking! - Hack the Cathedral Terra's computer",
 		"\t\* help - Lists the commands available",
 		"\t\* lazengann - Lordgenome's Gunmen",

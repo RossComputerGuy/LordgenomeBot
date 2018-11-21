@@ -11,13 +11,19 @@ module.exports = (client,msg,argv) => {
 		random: argv["random"] || true
 	}).then(images => {
 		var rating = argv["rating"] || "s";
-		if(rating != "s" && !msg.channel.nsfw) return msg.reply("Please use this command in a NSFW channel.");
+		if(rating != "s" && !msg.channel.nsfw) {
+			msg.channel.stopTyping(true);
+			return msg.reply("Please use this command in a NSFW channel.");
+		}
 		var results = [];
 		for(var img of images) {
 			if(img.common.rating == rating || img.rating == rating) results.push(img);
 		}
 		var result = results[argv["index"] || Math.floor(Math.random()*results.length)];
-		if(typeof(result) != "object") return msg.reply("Couldn't find any images");
+		if(typeof(result) != "object")  {
+			msg.channel.stopTyping(true);
+			return msg.reply("Couldn't find any images");
+		}
 		var embed = new Discord.RichEmbed();
 		embed.setTitle(result.id+" on "+site);
 		embed.setColor(0x6cae7f);
