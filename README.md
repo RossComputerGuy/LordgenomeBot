@@ -4,4 +4,5 @@ The Lordgenome bot for the /r/GurrenLagann Discord server. To install the bot, c
 
 # Links
 * [Invite to Discord Server](https://discord.gg/u6mUjWJ)
+* [Poll: Should chatbot like features be added?](https://www.strawpoll.me/16889251)
 * **More to come**
