@@ -20,6 +20,7 @@ module.exports = (client,msg,argv) => {
 			"\t\* site=<site> - Sets the site to search",
 			"\t\* limit=<number> - Sets the limit to use",
 			"\t\* rating=<value> - Sets the rating (Values: e(xplicite), s(afe), q(uestionable))",
+			"\t\* help - Shows the options and usage of the command"
 		].join("\n"));
 		return msg.channel.send(embed);
 	}
