@@ -5,6 +5,12 @@ const path = require("path");
 
 var client = new Discord.Client();
 
+client.on("guildMemberAdd",member => {
+	const channel = member.guild.channels.find(ch => ch.name == "member-log");
+	if(!channel) return;
+	channel.send("Welcome "+member.displayName);
+});
+
 client.on("message",msg => {
 	if(msg.content.substring(0,1) == "%" && !msg.author.bot) {
 		var argv = argsparser(msg.content.substring(1,msg.content.length));
