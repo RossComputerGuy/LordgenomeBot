@@ -12,7 +12,6 @@
     "discord.js": "^11.4.2",
     "fluent-ffmpeg": "^2.1.2",
     "google-tts-api": "0.0.3",
-    "http-client-stream": "^0.3.0",
     "kaori": "^1.2.0",
     "node-opus": "^0.3.1",
     "request": "^2.88.0",

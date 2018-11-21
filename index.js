@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 const GoogleTTS = require("google-tts-api");
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
-const http = require("http-client-stream");
 const path = require("path");
 const ytdl = require("ytdl-core");
 
@@ -91,7 +90,7 @@ client.on("message",msg => {
 					if(!voiceChannel) return msg.channel.send(txt,{ tts: true });
 					GoogleTTS(txt,argv["lang"] || "en",parseInt(argv["speed"] || "1")).then(url => {
 						voiceChannel.join().then(connection => {
-							connection.playStream(http(url).createStream()).on("end",() => {
+							connection.playArbitraryInput(url).on("end",() => {
 								connection.disconnect();
 							}).on("error",err => {
 								msg.reply(err.stack);
