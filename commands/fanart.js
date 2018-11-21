@@ -1,23 +1,33 @@
 const Discord = require("discord.js");
 const Kaori = require("kaori");
 
+const RATING = {
+	"q": "PURPLE",
+	"s": "GREEN",
+	"e": "GOLD"
+};
+
 module.exports = (client,msg,argv) => {
 	var kaori = new Kaori();
 	msg.channel.startTyping();
 	var site = argv["site"] || Object.keys(kaori.sites)[Math.floor(Math.random()*Object.keys(kaori.sites).length)];
 	kaori.search(site,{
-		tags: [argv["_"][0] || "gurren-lagann"],
-		limit: parseInt(argv["limit"] || "5"),
-		random: argv["random"] || true
+		tags: argv["_"].length > 0 ? argv["_"] : ["gurren-lagann"],
+		limit: parseInt(argv["limit"] || "10000"),
+		random: argv["random"] || false
 	}).then(images => {
 		var rating = argv["rating"] || "s";
-		if(rating != "s" && !msg.channel.nsfw) {
+		if(rating[0] == "e" && !msg.channel.nsfw) {
 			msg.channel.stopTyping(true);
-			return msg.reply("Please use this command in a NSFW channel.");
+			return msg.reply("Please use this command with the explicite rating set in a NSFW channel.");
+		}
+		if(Object.keys(RATING).indexOf(rating[0]) == -1) {
+			msg.channel.stopTyping(true);
+			return msg.reply("Invalid rating type.");
 		}
 		var results = [];
 		for(var img of images) {
-			if(img.common.rating == rating || img.rating == rating) results.push(img);
+			if(img.common.rating == rating[0] || img.rating == rating[0]) results.push(img);
 		}
 		var result = results[argv["index"] || Math.floor(Math.random()*results.length)];
 		if(typeof(result) != "object")  {
@@ -26,7 +36,7 @@ module.exports = (client,msg,argv) => {
 		}
 		var embed = new Discord.RichEmbed();
 		embed.setTitle(result.id+" on "+site);
-		embed.setColor(0x6cae7f);
+		embed.setColor(RATING[rating[0]]);
 		var timestamp = new Date(result.created_at || result.updated_at);
 		if(timestamp.getFullYear() == 1970) timestamp = new Date((result.created_at || result.updated_at)*1000);
 		embed.setTimestamp(timestamp);
