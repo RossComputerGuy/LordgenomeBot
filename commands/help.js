@@ -15,6 +15,7 @@ module.exports = (client,msg,argv) => {
 		"\t\* lazengann - Lordgenome's Gunmen",
 		"\t\* past - A short history lesson of the Spiral War",
 		"\t\* quote [character] - Displays a random quote, a random character is selected if the character's name is not provided..",
+		"\t\* voice - Voice stuff",
 		"\n",
 		"Links:",
 		"\t\* [GitHub Repository (The bot's code)](https://github.com/SpaceboyRoss01/LordgenomeBot)",
