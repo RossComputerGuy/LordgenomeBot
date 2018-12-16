@@ -9,9 +9,14 @@ const ytdl = require("ytdl-core");
 var client = new Discord.Client();
 
 client.on("guildMemberAdd",member => {
-	const channel = member.guild.channels.find(ch => ch.name == "member-log");
+	const channel = member.guild.channels.find(ch => ch.name == "welcome");
 	if(!channel) return;
-	channel.send("Welcome "+member.displayName);
+	var msgs = [
+	  "Welcome "+member.displayName,
+	  "Row! Row! Fight the "+member.displayName,
+	  "Do the impossible! See the "+member.displayName
+	];
+	channel.send(msgs[Math.floor(Math.random()*msgs.length)]);
 });
 
 function presenceUpdate() {
@@ -41,11 +46,6 @@ client.on("ready",() => {
 
 client.on("message",msg => {
 	if(msg.content.substring(0,1) == "%" && !msg.author.bot) {
-		var embed = new Discord.RichEmbed();
-		embed.setTitle("POLL: Should chatbot like features be added?");
-		embed.setURL("https://www.strawpoll.me/16889251");
-		embed.setColor(0x6cae7f);
-		msg.channel.send(embed);
 		var argv = argsparser(msg.content.substring(1,msg.content.length));
 		var cmd = argv["_"].shift();
 		if(cmd == "voice") {

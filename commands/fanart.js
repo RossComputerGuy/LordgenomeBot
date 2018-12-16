@@ -7,26 +7,15 @@ const RATING = {
 	"e": "GOLD"
 };
 
-module.exports = (client,msg,argv) => {
-	if(argv["help"] || argv["h"]) {
-		var embed = new Discord.RichEmbed();
-		embed.setTitle("Lordgenome: fanart");
-		embed.setColor(0x6cae7f);
-		embed.setDescription([
-			"Usage: %fanart [options] <tags...>",
-			"\n",
-			"Options:",
-			"\t\* --random - Enables random searching",
-			"\t\* --site=<site> - Sets the site to search",
-			"\t\* --limit=<number> - Sets the limit to use",
-			"\t\* --rating=<value> - Sets the rating (Values: e(xplicite), s(afe), q(uestionable))",
-			"\t\* --help - Shows the options and usage of the command"
-		].join("\n"));
-		return msg.channel.send(embed);
-	}
+function pullFanart(msg,argv,client,stack) {
 	var kaori = new Kaori();
+	delete kaori.sites["lolibooru.moe"];
 	msg.channel.startTyping();
 	var site = argv["site"] || Object.keys(kaori.sites)[Math.floor(Math.random()*Object.keys(kaori.sites).length)];
+	if(site.includes("loli")) {
+		msg.channel.stopTyping(true);
+	  return msg.reply("No lolicons are allowed here!!!");
+	}
 	if(Object.keys(kaori.sites).indexOf(site) == -1) {
 		msg.channel.stopTyping(true);
 		return msg.reply("Invalid site: "+site);
@@ -47,16 +36,22 @@ module.exports = (client,msg,argv) => {
 		}
 		var results = [];
 		for(var img of images) {
-			if(img.common.rating == rating[0] || img.rating == rating[0]) results.push(img);
+			if(img.common.rating == rating[0] || img.rating == rating[0]
+			  && img.common.tags.indexOf("loli") == -1
+				&& img.common.tags.indexOf("futanari") == -1
+				&& img.common.tags.indexOf("gore") == -1) results.push(img);
 		}
 		var result = results[argv["index"] || Math.floor(Math.random()*results.length)];
 		if(typeof(result) != "object")  {
 			msg.channel.stopTyping(true);
+			if(stack < 5) return pullFanart(msg,argv,client,stack+1);
 			return msg.reply("Couldn't find any images");
 		}
+		console.log(result);
 		var embed = new Discord.RichEmbed();
 		embed.setTitle(result.id+" on "+site);
 		embed.setColor(RATING[rating[0]]);
+		if(result.common.score) embed.addField("Score",result.common.score);
 		var timestamp = new Date(result.created_at || result.updated_at);
 		if(timestamp.getFullYear() == 1970) timestamp = new Date((result.created_at || result.updated_at)*1000);
 		embed.setTimestamp(timestamp);
@@ -71,6 +66,27 @@ module.exports = (client,msg,argv) => {
 		msg.channel.stopTyping(true);
 	}).catch(ex => {
 		msg.channel.stopTyping(true);
+		if(stack < 5) return pullFanart(msg,argv,client,stack+1);
 		msg.reply(ex.stack);
 	});
+}
+
+module.exports = (client,msg,argv) => {
+	if(argv["help"] || argv["h"]) {
+		var embed = new Discord.RichEmbed();
+		embed.setTitle("Lordgenome: fanart");
+		embed.setColor(0x6cae7f);
+		embed.setDescription([
+			"Usage: %fanart [options] <tags...>",
+			"\n",
+			"Options:",
+			"\t\* --random - Enables random searching",
+			"\t\* --site=<site> - Sets the site to search",
+			"\t\* --limit=<number> - Sets the limit to use",
+			"\t\* --rating=<value> - Sets the rating (Values: e(xplicite), s(afe), q(uestionable))",
+			"\t\* --help - Shows the options and usage of the command"
+		].join("\n"));
+		return msg.channel.send(embed);
+	}
+	pullFanart(msg,argv,client,0);
 };
