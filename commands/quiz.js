@@ -13,9 +13,13 @@ const QUESTIONS = {
   "How long is the time skip?": "7 years",
   "What does Nia want to plant in the movie?": "flowers",
   "What village is Simon from?": "jiha",
-  "What does Simon and Kamina call each other? (English ver.)": "bro",
-  "What does Simon and Kamina call each other? (Japanese ver.)": "anaki",
-  "What can Team (Dai)-Gurren do?", "the impossible"
+  "What does Simon and Kamina call each other?": ["bro","anaki"],
+  "What can Team (Dai)-Gurren do?": "the impossible",
+  "What is Spiral Power commonly known as?": "fighting spirit",
+  "What was Kittan's final words?": "so this is the power of the spiral... not bad, not bad at all..",
+  
+  "Name this character! (https://i.imgur.com/UwZCYov.png)": "simon",
+  "Name this character! (https://i.imgur.com/D2U6kL8.png)": ["nia","nia teppelin"]
 };
 
 const sortScores = scores => {
@@ -26,13 +30,13 @@ const sortScores = scores => {
 
 const questionTime = (client,msg,points,count) => {
   const question = Object.keys(QUESTIONS)[Math.floor(Math.random()*Object.keys(QUESTIONS).length)];
-  const anwser = QUESTIONS[question];
+  const anwser = Array.isArray(QUESTIONS[question]) ? QUESTIONS[question] : new Array(QUESTIONS[question]);
   msg.channel.send(question);
   var timeout;
   var responses = [];
   const onEnd = () => {
     for(var message of responses) message.delete().then(() => {}).catch(err => msg.channel.send(err.toString()));
-    if(count > 0) questionTime(client,msg,points,responses,count-1);
+    if(count > 1) questionTime(client,msg,points,responses,count-1);
     else {
       var embed = new Discord.RichEmbed();
       embed.setTitle("Lordgenome's TTGL quiz results");
@@ -43,7 +47,7 @@ const questionTime = (client,msg,points,count) => {
   const onResponse = message => {
     if(message.channel.id == msg.channel.id) {
       responses.push(message);
-      if(message.content.toLowerCase() == anwser.toLowerCase()) {
+      if(anwser.indexOf(message.content.toLowerCase()) > -1) {
         clearTimeout(timeout);
         msg.channel.send(msg.author.toString()+" got that one correct, +1 point");
         if(points[msg.author.id]) points[msg.author.id]++;
@@ -56,10 +60,10 @@ const questionTime = (client,msg,points,count) => {
   client.on("message",onResponse);
   timeout = setTimeout(() => {
     client.off("message",onResponse);
-    msg.channel.send("Nobody got that right, the correct anwser is: \""+anwser+"\".").then(msg => {
+    msg.channel.send("Nobody got that right, the correct anwser is: \""+anwser+"\".").then(message => {
       responses.push(message);
       onEnd();
-    });
+    }).catch(err => msg.channel.send(err.toString()));
   },6000);
 };
 
