@@ -12,9 +12,9 @@ client.on("guildMemberAdd",member => {
 	const channel = member.guild.channels.find(ch => ch.name == "welcome");
 	if(!channel) return;
 	var msgs = [
-	  "Welcome "+member.displayName,
-	  "Row! Row! Fight the "+member.displayName,
-	  "Do the impossible! See the "+member.displayName
+	  "Welcome @"+member.toString(),
+	  "Row! Row! Fight the @"+member.toString(),
+	  "Do the impossible! See the @"+member.toString()
 	];
 	channel.send(msgs[Math.floor(Math.random()*msgs.length)]);
 });

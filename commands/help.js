@@ -9,11 +9,13 @@ module.exports = (client,msg,argv) => {
 	embed.setColor(0x6cae7f);
 	embed.setDescription([
 		"**Commands**",
+		"\t\* daily-ttgl [number] - Searches the subreddit for the daily TTGL art.",
 		"\t\* fanart [sauce] - Searches for fanart. By default, it searched for Gurren Lagann fanart. If you change `rating` to something that is not `s` (safe) and your not in a NSFW channel, the bot will stop.",
 		"\t\* hacking! - Hack the Cathedral Terra's computer",
 		"\t\* help - Lists the commands available",
 		"\t\* lazengann - Lordgenome's Gunmen",
 		"\t\* past - A short history lesson of the Spiral War",
+		"\t\* quiz [question count] - Starts a quiz with a number of questions (defaults to 5 questions).",
 		"\t\* quote [character] - Displays a random quote, a random character is selected if the character's name is not provided..",
 		"\t\* voice - Voice stuff",
 		"\n",
